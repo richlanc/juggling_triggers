@@ -1,4 +1,4 @@
-BOARD_TAG    = atmega328#nano328
+BOARD_TAG    = nano328#leonardo
 ARDUINO_LIBS = 
 ARDUINO_DIR = /opt/arduino
 USER_LIB_PATH := $(realpath ../lib)
