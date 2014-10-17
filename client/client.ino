@@ -6,7 +6,6 @@
 #include "nRF24L01.h"
 #include "RF24.h"
 #include "juggling.h"
-#include "printf.h"
 
 RF24 radio(9, 10);
 
@@ -31,5 +30,4 @@ void setup(void) {
 void loop(void) {
     unsigned long time = millis();
     while(!radio.write(&time, sizeof(unsigned long))) {};
-    delay(10);
 }
