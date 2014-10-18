@@ -8,7 +8,7 @@
 #include "juggling.h"
 #include "printf.h"
 
-unsigned long payload;
+unsigned char payload;
 uint8_t reading_pipe = 1;
 RF24 radio(9, 10);
 
@@ -37,13 +37,16 @@ void setup(void) {
 void loop(void) {
     if(radio.available()) {
         bool done = false;
-        while(!radio.read(&payload, sizeof(unsigned long))) {};
+        while(!radio.read(&payload, sizeof(unsigned char))) {};
 
         /*
          * After a seemingly random amount of payloards, RF24 library starts
          * spewing zeros every other payload
          */
         if (payload == 0) {return;}
-        printf("Payload: %lu\n\r", payload);
+
+        /* Unformat payload */
+        payload = payload - 1;
+        printf("Payload: %hhu\n\r", payload);
     }
 }
