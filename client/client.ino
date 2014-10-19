@@ -6,7 +6,7 @@
 #include "nRF24L01.h"
 #include "RF24.h"
 #include "juggling.h"
- #include "printf.h"
+#include "printf.h"
 
 RF24 radio(9, 10);
 unsigned char previous_pins;
@@ -27,25 +27,28 @@ void setup(void) {
     _setup_write_setup(radio);
     radio.printDetails();
 
-    /* set pins 2-7 as read, without changing 0-1*/
-    DDRD = B00000000 | (DDRD & B00000011);
-    previous_pins = PIND & B11111100;
+    /* set pins 2-3 as read, without changing the rest */
+    DDRD = B00000000 | (DDRD & B11110011);
+    previous_pins = PIND & B00001100;
 }
 
 /**
  * Loop, called repeatedly after setup
  */
 void loop(void) {
-    /* get values of pins 2-7 */
-    unsigned char pins = PIND & B11111100;
+    /* get values of pins 2-3 */
+    unsigned char pins = PIND & B00001100;
+    unsigned char payload;
 
     if (pins != previous_pins) {
         previous_pins = pins;
         /* format payload */
-        unsigned char payload = (pins >> 2) + 1;
+        payload = (pins >> 2) + 1;
 
         printf("Payload: %hhu\n\r", payload);
-
-        while(!radio.write(&payload, sizeof(unsigned char))) {};
+    } else {
+        payload = 0;
     }
+
+    while(!radio.write(&payload, sizeof(unsigned char))) {};
 }

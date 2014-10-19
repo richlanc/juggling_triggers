@@ -41,7 +41,7 @@ void loop(void) {
 
         /*
          * After a seemingly random amount of payloards, RF24 library starts
-         * spewing zeros every other payload
+         * spewing zeros every other payload. Library bug?
          */
         if (payload == 0) {return;}
 
